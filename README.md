@@ -17,6 +17,13 @@ Generate and maintain architecture documentation for any codebase. Produces `CLA
 git clone https://github.com/jeremyknows/update-docs.git ~/.claude/skills/update-docs
 ```
 
+### OpenClaw
+
+```bash
+cd ~/.openclaw/skills
+git clone https://github.com/jeremyknows/update-docs.git
+```
+
 ### Other Agents (Cursor, Windsurf, etc.)
 
 Clone the repo and point your agent's skill loader at the `SKILL.md` file:

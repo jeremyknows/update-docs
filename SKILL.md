@@ -12,6 +12,9 @@ license: MIT
 metadata:
   author: jeremyknows
   version: "1.0.0"
+  openclaw:
+    requires:
+      bins: ["python3"]
 ---
 
 # Update Docs
