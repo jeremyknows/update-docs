@@ -125,6 +125,12 @@ date -u +"%Y-%m-%dT%H:%M:%SZ"
 - Conventions section (naming, errors, config, testing)
 - **Navigation guide** — minimum 4 "To do X: touch these files" entries
 
+**Operator-facing macro frameworks** (for long-lived architecture docs)
+- Preserve the user's decision vocabulary and mental models (metaphors, north-star sentences, macro positioning) when they help non-specialist stakeholders give useful feedback.
+- Put these in the human-facing vision/spec/README, not only in an internal baton.
+- Include a boundary note: metaphors guide decisions but contracts/tests/sources still govern truth.
+- When a paired master baton exists, use the baton skill's `references/twin-anchor-runtime-campaign.md` pattern: update the baton for continuity/live state and the human-facing doc for architecture narrative in the same scoped change.
+
 **`CLAUDE.md`** (Full and Update modes)
 - Dense agent reference: stack, commands, structure, patterns, constraints, env vars
 - 50–200 lines, scannable
@@ -142,6 +148,10 @@ date -u +"%Y-%m-%dT%H:%M:%SZ"
 
 **Update mode:** Preserve unchanged sections. Merge new subagent analysis into existing docs. Update the `last_mapped` timestamp.
 
+## Supply-chain incident mode
+
+If the user flags an active package-manager or supply-chain attack while documentation work is in progress, keep documentation updates on already-present local tools. Avoid `npm install`, `pnpm install`, `yarn install`, `npm audit fix`, dependency upgrades, or executing newly fetched package code unless the user explicitly scopes and clears that risk. Prefer `python3`, `git diff --check`, static reads, and existing repo scripts that do not fetch dependencies. State this caveat in the report when it affects what verification you did or skipped.
+
 ## Step 5: Sanity Check
 
 After writing all files, verify:
@@ -150,18 +160,23 @@ After writing all files, verify:
 2. **Mermaid syntax** — no unclosed subgraphs, node IDs are alphanumeric + underscores only, all `end` keywords present
 3. For deeper cross-document auditing, suggest: "Run `/multi-document-consistency-audit` for a full consistency check"
 
-## Step 6: Report
+## Step 6: Report / Commit Decision
 
 Summarize what was done:
 
 - List each file: created, updated, or unchanged
 - Note any issues found during sanity check
-- Remind the user to review changes before committing
-- Do NOT commit any changes
+- State the git status and whether changes were committed or left for review
+
+Default: leave changes uncommitted for user review. Exception: if the user explicitly asked to persist/capture durable docs, or the workspace convention favors committing coherent verified documentation, commit the scoped docs change after verification and report the commit. Do not commit if scope is mixed, review is pending, or generated docs are broad enough that human review is likely required first.
 
 ## Rules
 
 1. **Opus orchestrates, Sonnet reads.** Never read codebase files directly from this context. Always delegate to subagents. Even for small projects.
 2. **Respect existing docs.** Update stale sections; don't replace accurate content or restructure what works.
-3. **Do NOT commit.** Leave all changes uncommitted for user review.
+3. **Commit policy is scoped, not absolute.** Default to leaving generated docs uncommitted for review. If the user explicitly asks to persist/capture durable docs, or the repo convention supports committing coherent verified doc changes, commit only the scoped documentation after sanity checks and report the commit. Never commit broad/mixed generated docs just to make the tree clean.
 4. **Navigation guides are mandatory.** Every CODEBASE_MAP.md must include "To do X: touch these files" entries. This is the most actionable documentation for agents.
+
+## Changelog
+
+- **2026-05-11 — Operator-facing macro frameworks:** Added guidance for long-lived architecture docs to preserve user decision vocabulary/metaphors in human-facing specs, and to use the baton Twin-Anchor pattern when paired continuity docs exist.
