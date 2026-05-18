@@ -21,6 +21,24 @@ metadata:
 
 ## Step 1: Determine Mode
 
+First distinguish broad documentation generation from a bounded stale-doc patch.
+
+### Bounded patch mode
+
+Use **Bounded patch** when the user names exact docs/anchors/rows to update, asks for stale language to be corrected, or authorizes a narrow documentation-only follow-up from a prior gap review. In this mode:
+
+1. Do **not** run a whole-codebase scanner or spawn broad documentation subagents.
+2. Read the named docs and the source evidence artifacts/reports that justify the wording.
+3. Patch only the stale rows/sections and nearby metadata needed by the change.
+4. Preserve authority boundaries explicitly: name what evidence proves, what remains held, and whether any gate/status remains open.
+5. Verify old stale phrases/rows are absent, new rows/sections are present, referenced artifact paths exist, `git diff --check` passes, and added lines introduce no raw IDs, secret-looking values, or positive overclaims.
+6. When patching machine-readable topology/docs for a future visual artifact, distinguish **count/check metadata** from **rendered topology nodes**. Do not add placeholder nodes/edges solely to make a drift count pass if the renderer has visual/layout constraints or the audit only proves a configured surface count. Prefer updating the explicit drift expectation/comment and adding narrative caveats/source-status rows; then run the existing render/check command and treat layout failures as evidence that the topology expansion is not minimal.
+7. Leave changes uncommitted unless the user explicitly asks to commit.
+
+This mode is common for gate scorecards, artifact maps, master batons, and other Atlas continuity anchors after a no-live evidence/gap review.
+
+### Full / Update / Map-only modes
+
 Check the project root and `docs/` directory for existing documentation:
 
 - Look for `docs/CODEBASE_MAP.md` — if it exists, read its YAML frontmatter for `last_mapped` timestamp
@@ -30,11 +48,12 @@ Based on findings, select a mode:
 
 | Condition | Mode |
 |-----------|------|
+| User named exact docs/rows/anchors for a narrow stale-doc correction | **Bounded patch** — patch only that scope |
 | No `docs/CODEBASE_MAP.md` exists | **Full** — generate all docs from scratch |
 | `CODEBASE_MAP.md` exists with `last_mapped` | **Update** — scope changes since last map |
 | User specifically asked for "codebase map" only | **Map-only** — generate only `docs/CODEBASE_MAP.md` |
 
-Default to **Full** when ambiguous.
+Default to **Full** only when the user asks for broad docs and scope is ambiguous. Default to **Bounded patch** when exact target files/rows are provided.
 
 ## Step 2: Scan the Codebase
 
